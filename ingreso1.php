@@ -288,7 +288,7 @@ $conn->close();
 <nav class="navbar">
         <div class="menu">
             <div class="menu-item">
-                <a href="#">Ingresos</a>
+                <a href="#">Ingresos totales</a>
                 <div class="dropdown">
                     <div class="dropdown-content">
                         <a href="https://www.winston93.edu.mx/tareas93/ingreso1.php">Desayunos</a>
