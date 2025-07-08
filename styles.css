@@ -1,0 +1,80 @@
+/* Establecer la imagen de fondo para toda la página */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('fondo.jpg'); /* Ruta a la imagen */
+    background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+    background-position: center center; /* Centra la imagen */
+    background-attachment: fixed; /* Hace que la imagen permanezca fija mientras se desplaza */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+/* Otros estilos del menú */
+.navbar {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente para que el texto sea legible */
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-item {
+    position: relative;
+    margin-left: 20px;
+}
+
+.menu-item a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 20px 30px;
+    display: inline-block;
+}
+
+.menu-item::before {
+    content: '•';
+    font-size: 20px;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-content {
+    min-width: 300px;
+    max-width: 1000px;
+    padding: 40px 30px;
+    box-sizing: border-box;
+}
+
+.dropdown-content a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+    padding: 10px 0;
+    font-size: 18px;
+}
+
+.dropdown-content a:hover {
+    color: #007aff;
+}
+
+.menu-item:hover .dropdown {
+    display: block;
+}

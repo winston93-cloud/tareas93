@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <h2>Generar Comprobante de Pago</h2>
+    <label for="searchInput">Alumno:</label>
+    <input type="text" id="searchInput">
+    <br>
+    <label for="alumno">Referencia:</label>
+    <input type="text" id="alumno">
+    <br>
+    <label for="totalFila">Total:</label>
+    <table id="totalFila">
+        <tr>
+            <td></td>
+            <td></td>
+            <td>$0.00</td> <!-- Ajustar según la lógica de tu aplicación -->
+        </tr>
+    </table>
+    <br>
+    <button onclick="generarPDFProfesional()">Generar PDF</button>
+
+    <script>
+        function generarPDFProfesional() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Logo (opcional)
+            const imgData = 'data:image/png;base64,...'; // Tu logo en base64
+            if (imgData !== 'data:image/png;base64,...') {
+                doc.addImage(imgData, 'PNG', 15, 10, 30, 15);
+            }
+            
+            // Encabezado
+            doc.setFontSize(20);
+            doc.setTextColor(40, 40, 40);
+            doc.text('INSTITUTO WINSTON CHURCHILL', 105, 20, { align: 'center' });
+            doc.setFontSize(16);
+            doc.text('COMPROBANTE DE PAGO', 105, 30, { align: 'center' });
+            
+            // Datos del alumno
+            doc.setFontSize(12);
+            const alumno = document.getElementById('searchInput').value;
+            const referencia = document.getElementById('alumno').value;
+            doc.text(`Alumno: ${alumno}`, 20, 45);
+            doc.text(`Referencia: ${referencia}`, 20, 55);
+            doc.text(`Fecha de emisión: ${new Date().toLocaleDateString()}`, 20, 65);
+            
+            // Línea divisoria
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, 70, 190, 70);
+            
+            // Totales
+            const total = document.querySelector('#totalFila td:nth-child(3)').textContent;
+            const finalY = 85; // Ajusta según la tabla de conceptos si la agregas
+            doc.setFontSize(14);
+            doc.text('TOTAL:', 150, finalY);
+            doc.text(total, 180, finalY, { align: 'right' });
+            
+            // Firma y sello
+            doc.line(130, finalY + 20, 180, finalY + 20);
+            doc.text('Firma Autorizada', 155, finalY + 25, { align: 'center' });
+            
+            // Guardar
+            doc.save(`Comprobante_${referencia}.pdf`);
+        }
+    </script>
+</body>
+</html>

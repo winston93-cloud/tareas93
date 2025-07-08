@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocompletar Búsqueda</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .margen-azul {
+            margin: 20px; /* Especifica el margen deseado */
+            border: 4px solid royalblue; /* Color y grosor del borde */
+            padding: 10px; /* Espaciado interno dentro del contenedor */
+            width: 65%; /* Establece el ancho del contenedor al 50% del ancho del padre */
+        }
+
+        /* Clase para centrar horizontalmente */
+        .mx-auto {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        .navbar-default {
+            background-color: royalblue;
+            border-color: royalblue;
+        }
+
+        .navbar-default .navbar-nav>li>a {
+            color: white;
+        }
+
+        .navbar-default .navbar-nav .dropdown:hover .dropdown-menu {
+            display: block;
+          }
+          
+          #image-slider {
+            background: linear-gradient(to bottom, #3498db, #2980b9); /* Degradado de colores, puedes ajustar los colores aquí */
+            padding: 20px; /* Espaciado interno para separar el contenido del slider del fondo */
+            border-radius: 10px; /* Borde redondeado */
+        }
+      /* Establecer el tamaño deseado para las imágenes */
+        #image-slider .carousel-inner img {
+            margin: 20px; /* Especifica el margen deseado */
+            width: 80%; /* Ancho del contenedor del slider */
+            height: 500px; /* Altura deseada de las imágenes */
+            object-fit: cover; /* Escalar y recortar las imágenes para ajustarse al tamaño especificado */
+        }
+    </style>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos <span class="glyphicon glyphicon-chevron-down"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="conceptos.html">Catálogo de Conceptos y Subconceptos</a></li>
+                        <li><a href="nombres.html">Catálogo de Nombres</a></li>                   
+                        <li><a href="cargar.php">Actualización</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Concentrado General <span class="glyphicon glyphicon-chevron-down"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="polizas.html">Pólizas</a></li>                      
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ir a <span class="glyphicon glyphicon-chevron-down"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="educativo.html">Cheques Educativo</a></li>
+                        <li><a href="educativo.html">Cheques Sociedad de Padres Winston</a></li>
+                        <li><a href="educativo.html">Cheques Sociedad de Padres Educativo</a></li>                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br><br>
+
+    <script>
+        $(document).ready(function(){
+            // Cuando el usuario escribe en el campo de búsqueda
+            $("#busqueda").keyup(function(){
+                // Obtener el valor del campo de búsqueda
+                var query = $(this).val();
+                // Realizar una solicitud AJAX al servidor para obtener resultados
+                $.ajax({
+                    url: "buscar.php", // Archivo PHP que manejará la búsqueda en el servidor
+                    method: "POST",
+                    data: {query: query},
+                    success: function(data){
+                        // Mostrar los resultados en el área de resultados
+                        $("#resultados").html(data);
+                    }
+                });
+                
+            });
+
+            // Agregar evento de clic para abrir la ventana modal
+            $(document).on("click", ".open-modal", function(){
+                var nombre = $(this).data("nombre");
+                var apellido = $(this).data("apellido");
+
+                // Actualizar el contenido de la ventana modal
+                $(".modal-body").html("<p>Nombre: " + nombre + "</p><p>Identificador: " + apellido + "</p>");
+
+                // Mostrar la ventana modal
+                $("#myModal").modal("show");
+            });
+
+            // Agregar evento de clic para el botón de dar de alta
+            $("#altaRegistro").click(function(){
+                // Aquí puedes realizar la acción que desees al dar de alta un nuevo registro
+               // alert("¡Acción para dar de alta un nuevo registro!");
+            });
+        });
+    </script>
+     <script>
+        $(document).ready(function(){
+            // Cuando el usuario escribe en el campo de búsqueda
+            $("#busqueda2").keyup(function(){
+                // Obtener el valor del campo de búsqueda
+                var query = $(this).val();
+                // Realizar una solicitud AJAX al servidor para obtener resultados
+                $.ajax({
+                    url: "buscar2.php", // Archivo PHP que manejará la búsqueda en el servidor
+                    method: "POST",
+                    data: {query: query},
+                    success: function(data){
+                        // Mostrar los resultados en el área de resultados
+                        $("#resultados").html(data);
+                    }
+                });
+                
+            });
+
+            // Agregar evento de clic para abrir la ventana modal
+            $(document).on("click", ".open-modal", function(){
+                var nombre = $(this).data("nombre");
+                var apellido = $(this).data("apellido");
+
+                // Actualizar el contenido de la ventana modal
+                $(".modal-body").html("<p>Nombre: " + nombre + "</p><p>Identificador: " + apellido + "</p>");
+
+                // Mostrar la ventana modal
+                $("#myModal").modal("show");
+            });
+
+            // Agregar evento de clic para el botón de dar de alta
+            $("#altaRegistro").click(function(){
+
+                var nombre = document.getElementById("busqueda").value;
+	        	var identificador = document.getElementById("busqueda2").value;
+	        	var ruta="nom="+nombre+"&ide="+identificador;
+		    $.ajax({
+			    url:'agregar.php',
+			    type: 'POST',
+			    data: ruta,
+		    })
+		    .done(function(res){
+			    $('#resultados').html(res)
+		    })
+		    .fail(function(){
+			    console.log("error");
+		    })
+		    .always(function(){
+			    console.log("complete");
+		    })
+                // Aquí puedes realizar la acción que desees al dar de alta un nuevo registro
+                alert("¡Registro dado de Alta!");
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div class="container margen-azul mx-auto"> <!-- Agrega la clase mx-auto para centrar horizontalmente -->
+        <h2>Catálogo de nombres</h2>
+        <div class="form-group">
+            <label for="busqueda">Buscar x nombre:</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="busqueda" placeholder="Ingrese su búsqueda">
+              
+                <label for="busqueda2">Buscar x identificador:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="busqueda2" placeholder="Ingrese su búsqueda">
+                  
+                    <br>  <br>
+                    <button class="btn btn-primary" id="altaRegistro" type="button">Alta Registro</button>
+                    
+            </div>
+        </div>
+        </div>
+        <!-- Área para mostrar resultados en tabla -->
+        <div id="resultados"></div>
+    </div>
+
+    <!-- Ventana modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Contenido de la ventana modal -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Detalles</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido de la ventana modal se insertará aquí -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

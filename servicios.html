@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocompletar Búsqueda</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <br><br>
+
+    <script>
+        $(document).ready(function(){
+            // Cuando el usuario escribe en el campo de búsqueda
+            $("#busqueda").keyup(function(){
+                // Obtener el valor del campo de búsqueda
+                var query = $(this).val();
+                // Realizar una solicitud AJAX al servidor para obtener resultados
+                $.ajax({
+                    url: "buscar3.php", // Archivo PHP que manejará la búsqueda en el servidor
+                    method: "POST",
+                    data: {query: query},
+                    success: function(data){
+                        // Mostrar los resultados en el área de resultados
+                        $("#resultados").html(data);
+                    }
+                });
+                
+                // Agregar evento de clic para el botón de dar de alta
+            $("#guardar").click(function(){
+
+                var app = document.getElementById("apellidoPaterno").value;
+                var apm = document.getElementById("apellidoMaterno").value;
+                var nombre = document.getElementById("nombre").value;
+                var date = document.getElementById("fechaRegistro").value;
+                var ruta="app="+app+"&apm="+apm+"&nombre="+nombre+"&date="+date;
+                $.ajax({
+                    url: 'agregar.php',
+                    type: 'POST',
+                    data: ruta, // Datos a enviar
+                })
+                .done(function(res){
+                    // Mostrar el resultado en el área de resultados
+                    $('#resultados').html(res);
+
+                    // Si la solicitud es exitosa, mostrar el mensaje y redirigir
+                    alert("¡Registro dado de Alta!");
+
+                    // Redirigir a la página anterior después de cerrar el alert
+                    var referrer = document.referrer; // Obtener la URL de la página anterior
+                    if (referrer) {
+                        window.location.href = referrer; // Redirigir a la página desde la que el usuario vino
+                    } else {
+                        window.location.href = "https://www.winston93.edu.mx/tareas93/index1.php"; // Página por defecto si no hay referrer
+                    }
+                })
+                .fail(function(){
+                    console.log("error");
+                })
+                .always(function(){
+                    console.log("complete");
+                })
+                });          
+            });            
+        });
+    </script>
+<style>
+    /* Fondo con degradado */
+    body {
+        background: linear-gradient(135deg, #0ec7ff, #2575fc);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Tarjeta blanca centrada */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+        background: white;
+        color: #333;
+        width: 100%;
+        max-width: 600px; /* Aumenta el tamaño */
+        text-align: center;
+    }
+
+    /* Campos de entrada */
+    .form-control {
+        border-radius: 8px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background: #f9f9f9;
+        color: #333;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #6a11cb;
+        box-shadow: 0 0 10px rgba(106, 17, 203, 0.5);
+    }
+
+    /* Botón personalizado */
+    .btn-custom {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+        width: 100%;
+    }
+
+    .btn-custom:hover {
+        background: linear-gradient(135deg, #ff5c75, #ff77a9);
+        transform: scale(1.05);
+    }
+    .btn-custom2 {
+        background: linear-gradient(135deg, #82b4f7, #0e81ce);
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+        width: 100%;
+    }
+
+    .btn-custom2:hover {
+        background: linear-gradient(135deg, #5da9ff, #42aeec);
+        transform: scale(1.05);
+    }
+    .btn-custom, .btn-custom2 {
+    display: block;
+    margin-bottom: 10px; /* Espaciado entre botones */
+}
+
+
+    /* Formulario oculto con animación */
+    #registroForm {
+        display: none;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Quitar contorno del botón cuando se hace clic */
+    #altaRegistro:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    /* Estilo para el botón de regreso */
+    .btn-regresar {
+        background-color: #d9534f;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-regresar:hover {
+        background-color: #c9302c;
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2 class="mb-4">Catálogo de Nombres</h2>
+
+<div class="mb-3">
+    <label for="servicio" class="form-label">🔍 Selecciona un servicio:</label>
+    <select class="form-select" id="servicio" onchange="actualizarPrecio()" onkeydown="moveToNext(event, 'busquedaPrecio')">
+        <option value="" disabled selected>Seleccione un servicio</option>
+    </select>
+</div>
+
+<div class="mb-3" style="margin-bottom: 10px;">
+    <label for="precio" class="form-label" >💰 Precio:</label>
+    <input type="text" class="form-control" id="busquedaPrecio" placeholder="Precio del servicio" >
+</div>
+
+<button class="btn btn-custom2" id="actualiza" >
+    <i class="fas fa-sync-alt" ></i> Actualizar Precio
+</button>
+<br>
+<button class="btn btn-custom" id="altaRegistro">➕ Alta Servicio</button>
+
+<!-- Formulario oculto -->
+<div id="registroForm" class="mt-4">
+    <h4>Nuevo Servicio</h4>
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Ingrese el nombre del servicio:</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" onkeydown="moveToNext(event, 'precio')">
+    </div>
+    <div class="mb-3">
+        <label for="precio" class="form-label">Ingrese el precio:</label>
+        <input type="text" class="form-control" id="precio" placeholder="Ingrese el precio" onkeydown="moveToNext(event, 'guardar')">
+    </div>
+    <button class="btn btn-custom" id="guardar">✅ Guardar</button>
+</div>
+<!-- Botón de regresar -->
+<button class="btn btn-regresar" id="regresarBtn">⬅ Regresar</button>
+
+<br>
+<div id="resultados"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    cargarServicios();
+});
+
+// Función para cargar los servicios desde la base de datos
+function cargarServicios() {
+    fetch('obtener_servicio2.php')
+        .then(response => response.json())
+        .then(data => {
+            let select = document.getElementById('servicio');
+            data.forEach(servicio => {
+                let option = document.createElement('option');
+                option.value = servicio.precio; // El precio se almacena en el value
+                option.textContent = servicio.nombre;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error cargando servicios:', error));
+}
+
+// Función para mostrar el precio en el input cuando se selecciona un servicio
+function actualizarPrecio() {
+    let select = document.getElementById('servicio');
+    let precioInput = document.getElementById('busquedaPrecio');
+    precioInput.value = select.value; // Muestra el precio seleccionado en el input
+}
+// Ca
+// Función para mover el foco al siguiente input
+function moveToNext(event, nextInputId) {
+    if (event.key === "Enter") {
+        // Prevenir el comportamiento predeterminado
+        event.preventDefault();
+        // Mover al siguiente input
+        document.getElementById(nextInputId).focus();
+    }
+}
+
+// Mostrar formulario al hacer clic en "Alta Registro"
+document.getElementById("altaRegistro").addEventListener("click", function () {
+    let form = document.getElementById("registroForm");
+    if (form.style.display === "none" || form.style.display === "") {
+        form.style.display = "block";
+    } else {
+        form.style.display = "none";
+    }
+});
+
+// Función para el botón de regresar
+document.getElementById("regresarBtn").addEventListener("click", function() {
+    var referrer = document.referrer; // Obtiene la URL de la página anterior
+    if (referrer) {
+        window.location.href = referrer; // Redirige a la página desde la que el usuario vino
+    } else {
+        window.location.href = "https://www.winston93.edu.mx/tareas93/index1.php"; // URL por defecto si no hay referrer
+    }
+});
+
+document.getElementById('actualiza').addEventListener('click', function() {
+    let select = document.getElementById('servicio');
+    let servicioSeleccionado = select.options[select.selectedIndex].text;
+    let nuevoPrecio = document.getElementById('busquedaPrecio').value;
+
+
+    fetch('actualizar_precio.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `id=${servicioSeleccionado}&precio=${nuevoPrecio}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Mensaje de éxito o error desde PHP
+         // Redirigir a la página anterior después de cerrar el alert
+         var referrer = document.referrer; // Obtener la URL de la página anterior
+                    if (referrer) {
+                        window.location.href = referrer; // Redirigir a la página desde la que el usuario vino
+                    } else {
+                        window.location.href = "https://www.winston93.edu.mx/tareas93/index1.php"; // Página por defecto si no hay referrer
+                    }
+    })
+    .catch(error => console.error('Error actualizando precio:', error));
+});
+
+document.getElementById('guardar').addEventListener('click', function() {
+    let nombre = document.getElementById('nombre').value.trim();
+    let precio = document.getElementById('precio').value.trim();
+
+    if (!nombre || !precio) {
+        alert("Por favor, complete todos los campos.");
+        return;
+    }
+
+    fetch('guardar_precio.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `nombre=${encodeURIComponent(nombre)}&precio=${encodeURIComponent(precio)}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Mensaje de éxito o error desde PHP
+        document.getElementById('nombre').value = '';
+        document.getElementById('precio').value = '';
+         // Redirigir a la página anterior después de cerrar el alert
+         var referrer = document.referrer; // Obtener la URL de la página anterior
+                    if (referrer) {
+                        window.location.href = referrer; // Redirigir a la página desde la que el usuario vino
+                    } else {
+                        window.location.href = "https://www.winston93.edu.mx/tareas93/index1.php"; // Página por defecto si no hay referrer
+                    }
+    })
+    .catch(error => console.error('Error al guardar:', error));
+});
+</script>
+
+</body>
+</html>
